@@ -2,7 +2,7 @@ FROM php:5.6-apache
 
 MAINTAINER Thomas Nabord <thomas.nabord@prestashop.com
 
-ENV PS_VERSION {PS_VERSION}
+ENV PS_VERSION 1.6.1.4
 
 ENV PS_DOMAIN prestashop.local
 ENV DB_SERVER 127.0.0.1
@@ -42,7 +42,7 @@ RUN apt-get update \
     && docker-php-ext-install iconv mcrypt pdo mysql pdo_mysql mbstring soap gd
 
 # Get PrestaShop
-ADD {PS_URL} /tmp/prestashop.zip
+ADD versions16.txt /tmp/prestashop.zip
 RUN unzip -q /tmp/prestashop.zip -d /tmp/ && mv /tmp/prestashop/* /var/www/html && rm /tmp/prestashop.zip
 COPY config_files/docker_updt_ps_domains.php /var/www/html/
 
