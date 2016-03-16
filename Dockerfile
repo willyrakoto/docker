@@ -56,8 +56,8 @@ COPY config_files/php.ini /usr/local/etc/php/
 
 # MySQL configuration
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
-EXPOSE 3306 80
-
+EXPOSE 3306
+EXPOSE 80
 VOLUME /var/www/html/modules
 VOLUME /var/www/html/themes
 VOLUME /var/www/html/override
