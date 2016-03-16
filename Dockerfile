@@ -43,8 +43,8 @@ RUN apt-get update \
 
 # Get PrestaShop
 ADD versions16.txt /tmp/versions16.txt
+COPY prestashop_1.6.1.4_fr.zip /tmp/prestashop_1.6.1.4_fr.zip
 RUN cd /tmp && \
-    wget https://www.prestashop.com/ajax/controller.php?method=download&type=releases&file=prestashop_1.6.1.4.zip&language=fr && \
     mv /tmp/prestashop_1.6.1.4.zip /tmp/prestashop.zip
 RUN unzip -q /tmp/prestashop.zip -d /tmp/ && mv /tmp/prestashop/* /var/www/html && rm /tmp/prestashop.zip
 COPY config_files/docker_updt_ps_domains.php /var/www/html/
