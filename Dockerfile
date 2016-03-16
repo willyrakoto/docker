@@ -42,7 +42,10 @@ RUN apt-get update \
     && docker-php-ext-install iconv mcrypt pdo mysql pdo_mysql mbstring soap gd
 
 # Get PrestaShop
-ADD versions16.txt /tmp/prestashop.zip
+ADD versions16.txt
+RUN cd /tmp && \
+    wget https://www.prestashop.com/ajax/controller.php?method=download&type=releases&file=prestashop_1.6.1.4.zip&language=fr && \
+    mv /tmp/prestashop_1.6.1.4.zip /tmp/prestashop.zip
 RUN unzip -q /tmp/prestashop.zip -d /tmp/ && mv /tmp/prestashop/* /var/www/html && rm /tmp/prestashop.zip
 COPY config_files/docker_updt_ps_domains.php /var/www/html/
 
