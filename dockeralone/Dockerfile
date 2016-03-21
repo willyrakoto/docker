@@ -47,4 +47,5 @@ VOLUME /var/www/html/themes
 VOLUME /var/www/html/override
 
 COPY config_files/docker_run.sh /tmp/
+RUN chmod +x /tmp/docker_run.sh
 ENTRYPOINT ["/tmp/docker_run.sh"]
