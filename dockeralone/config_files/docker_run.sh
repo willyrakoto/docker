@@ -28,6 +28,7 @@ if [ ! -f ./config/settings.inc.php  ]; then
 	fi
 
   chown www-data:www-data -R /var/www/html/
+fi
 
 # We need to remove the pid file or Apache won't start after being stopped
 if [ -f /var/run/apache2/apache2.pid  ]; then
