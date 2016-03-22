@@ -46,7 +46,7 @@ VOLUME /var/www/html/modules
 VOLUME /var/www/html/themes
 VOLUME /var/www/html/override
 
-RUN touch /var\/log\/apache2\/error.log 
+RUN touch /var\/log\/apache2\/error.log \
  && touch \/var\/log\/apache2\/custom.log
 
 RUN sed -e 's/Listen 80/Listen 8080/' -i /etc/apache2/apache2.conf /etc/apache2/ports.conf \
