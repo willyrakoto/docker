@@ -35,7 +35,7 @@ COPY config_files/docker_updt_ps_domains.php /var/www/html/
 
 # Apache configuration
 RUN a2enmod rewrite
-RUN chown www-data:www-data -R /var/www/html/
+RUN chown 1001:1001 -R /var/www/html/
 
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
@@ -48,4 +48,7 @@ VOLUME /var/www/html/override
 
 COPY config_files/docker_run.sh /tmp/
 RUN chmod +x /tmp/docker_run.sh
+
+USER 1001
+
 ENTRYPOINT ["/tmp/docker_run.sh"]
