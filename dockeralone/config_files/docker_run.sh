@@ -26,8 +26,6 @@ if [ ! -f ./config/settings.inc.php  ]; then
 	else
 		sed -ie "s/DirectoryIndex\ index.php\ index.html/DirectoryIndex\ docker_updt_ps_domains.php\ index.php\ index.html/g" /etc/apache2/apache2.conf
 	fi
-
-  chown 1001:1001 -R /var/www/html/
 fi
 
 # We need to remove the pid file or Apache won't start after being stopped
