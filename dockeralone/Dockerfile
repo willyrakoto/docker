@@ -46,6 +46,19 @@ VOLUME /var/www/html/modules
 VOLUME /var/www/html/themes
 VOLUME /var/www/html/override
 
+RUN touch /var\/log\/apache2\/error.log 
+ && touch \/var\/log\/apache2\/custom.log
+
+RUN sed -e 's/Listen 80/Listen 8080/' -i /etc/apache2/apache2.conf /etc/apache2/ports.conf \
+ && sed -i 's/ErrorLog .*/ErrorLog \/var\/log\/apache2\/error.log/' /etc/apache2/apache2.conf \
+ && sed -i 's/CustomLog .*/CustomLog \/var\/log\/apache2\/custom.log combined/' /etc/apache2/apache2.conf \
+ && sed -i 's/LogLevel .*/LogLevel info/' /etc/apache2/apache2.conf
+ 
+RUN chmod -R 777 /var/www/html \
+ && chmod -R 777 /var/lock/apache2 \
+ && chmod -R 777 /var/run/apache2 \
+ && chmod -R 777 /var/log/apache2 
+
 COPY config_files/docker_run.sh /tmp/
 RUN chmod +x /tmp/docker_run.sh
 
