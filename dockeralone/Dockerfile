@@ -41,7 +41,9 @@ RUN sed -e 's/Listen 80/Listen 8080/' -i /etc/apache2/apache2.conf /etc/apache2/
  && sed -i 's/LogLevel .*/LogLevel info/' /etc/apache2/apache2.conf \
  && touch /var\/log\/apache2\/error.log \
  && touch \/var\/log\/apache2\/custom.log \
- && chmod -R a+rwx /var/log/apache2
+ && chmod -R a+rwx /var/log/apache2 \
+ && chmod -R a+rwx /var/lock/apache2 \
+ && chmod -R a+rwx /var/run/apache2
 
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
