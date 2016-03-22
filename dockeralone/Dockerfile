@@ -35,12 +35,12 @@ COPY config_files/docker_updt_ps_domains.php /var/www/html/
 
 # Apache configuration
 RUN a2enmod rewrite
-RUN chown 1001:1001 -R /var/www/html/
+RUN chmod -R a+rwx /var/www/html/
 
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
 
-EXPOSE 80
+EXPOSE 8080
 
 VOLUME /var/www/html/modules
 VOLUME /var/www/html/themes
