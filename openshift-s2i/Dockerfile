@@ -79,6 +79,9 @@ COPY  ["s2i/bin/run", "s2i/bin/assemble", "s2i/bin/usage", "/usr/libexec/s2i/"]
 #User
 USER 1001
 
+# Set workdir
+WORKDIR /var/www/html
+
 # Modify the usage script in your application dir to inform the user how to run
 # this image.
 CMD ["/usr/libexec/s2i/usage"]
