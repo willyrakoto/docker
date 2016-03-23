@@ -55,8 +55,7 @@ RUN sed -e 's/Listen 80/Listen 8080/' -i /etc/apache2/apache2.conf /etc/apache2/
  && touch \/var\/log\/apache2\/custom.log \
  && chmod -R a+rwx /var/log/apache2 \
  && chmod -R a+rwx /var/lock/apache2 \
- && chmod -R a+rwx /var/run/apache2 \
- && chmod -R a+rwx /usr/libexec/s2i
+ && chmod -R a+rwx /var/run/apache2
 
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
@@ -67,7 +66,10 @@ COPY bin/fix-permissions /usr/bin/fix-permissions
 # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way
 COPY  ["s2i/bin/run", "s2i/bin/assemble", "s2i/bin/usage", "/usr/libexec/s2i/"]
 
-#User
+# Add rights
+RUN chmod -R a+rwx /usr/libexec/s2i
+ 
+# User
 USER 1001
 
 # Set workdir
