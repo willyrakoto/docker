@@ -47,7 +47,7 @@ EXPOSE 8080
 USER 1001
 
 # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way
-COPY  ["run", "assemble", "save-artifacts", "usage", "/usr/libexec/s2i/"]
+COPY  ["s2i/bin/run", "s2i/bin/assemble", "/usr/libexec/s2i/"]
 
 # Modify the usage script in your application dir to inform the user how to run
 # this image.
