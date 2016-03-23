@@ -68,6 +68,7 @@ COPY  ["s2i/bin/run", "s2i/bin/assemble", "s2i/bin/usage", "/usr/libexec/s2i/"]
 
 # Add rights
 RUN chmod -R a+rwx /usr/libexec/s2i
+RUN chmod -R a+rwx /usr/bin/fix-permissions
  
 # User
 USER 1001
