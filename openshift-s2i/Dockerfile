@@ -59,19 +59,8 @@ RUN sed -e 's/Listen 80/Listen 8080/' -i /etc/apache2/apache2.conf /etc/apache2/
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
 
-# Create directory where the image STI scripts will be located
-# Install the base-usage script with base image usage informations
-COPY bin/base-usage /usr/bin/base-usage
-
-# Use entrypoint so path is correctly adjusted already at the time the command
-# is searching, so something like docker run IMG python runs binary from SCL
-COPY bin/container-entrypoint /usr/bin/container-entrypoint
-
 # Add script to fix directory permissions 
 COPY bin/fix-permissions /usr/bin/fix-permissions
-
-# Add utility for parsing cgroup limits
-COPY bin/cgroup-limits.py /usr/bin/cgroup-limits.py
 
 # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way
 COPY  ["s2i/bin/run", "s2i/bin/assemble", "s2i/bin/usage", "/usr/libexec/s2i/"]
