@@ -2,6 +2,22 @@ FROM php:5.6-apache
 
 MAINTAINER Willy Rakotoarisoa
 
+# Location of the STI scripts inside the image
+#
+LABEL io.openshift.s2i.scripts-url=image:///usr/libexec/s2i
+
+# DEPRECATED: This label will be kept here for backward compatibility
+LABEL io.s2i.scripts-url=image:///usr/libexec/s2i
+
+# Deprecated. Use above LABEL instead, because this will be removed in future versions.
+ENV STI_SCRIPTS_URL=image:///usr/libexec/s2i
+
+# Path to be used in other layers to place s2i scripts into
+ENV STI_SCRIPTS_PATH=/usr/libexec/s2i
+
+# Expose 8080 because 80 is allowed only for root
+EXPOSE 8080
+
 # Set the labels that are used for Openshift to describe the builder image.
 LABEL io.k8s.description="Apache with php5.6 based on Debian" \
     io.k8s.display-name="PHP5.6-apache-debian" \
@@ -21,7 +37,10 @@ RUN apt-get update \
 		wget \
 		unzip \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install iconv mcrypt pdo mysql pdo_mysql mbstring soap gd
+    && docker-php-ext-install iconv mcrypt pdo mysql pdo_mysql mbstring soap gd \
+    useradd -u 1001 -r -g 0 -d /var/www/html/ -s /sbin/nologin \
+      -c "Default Application User" default && \
+    chown -R 1001:0 /var/www/html
 
 # Apache configuration
 # Expose 8080 because 80 is allowed only for root and change log files
@@ -40,14 +59,25 @@ RUN sed -e 's/Listen 80/Listen 8080/' -i /etc/apache2/apache2.conf /etc/apache2/
 # PHP configuration
 COPY config_files/php.ini /usr/local/etc/php/
 
-# Expose 8080 because 80 is allowed only for root
-EXPOSE 8080
+# Create directory where the image STI scripts will be located
+# Install the base-usage script with base image usage informations
+COPY bin/base-usage /usr/bin/base-usage
 
-#User
-USER 1001
+# Use entrypoint so path is correctly adjusted already at the time the command
+# is searching, so something like docker run IMG python runs binary from SCL
+COPY bin/container-entrypoint /usr/bin/container-entrypoint
+
+# Add script to fix directory permissions 
+COPY bin/fix-permissions /usr/bin/fix-permissions
+
+# Add utility for parsing cgroup limits
+COPY bin/cgroup-limits.py /usr/bin/cgroup-limits.py
 
 # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way
 COPY  ["s2i/bin/run", "s2i/bin/assemble", "s2i/bin/usage", "/usr/libexec/s2i/"]
+
+#User
+USER 1001
 
 # Modify the usage script in your application dir to inform the user how to run
 # this image.
